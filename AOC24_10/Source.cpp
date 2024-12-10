@@ -26,30 +26,6 @@ vector<vector<int>> makeMove(vector<vector<int>> positions, vector<string> grid,
 	return nextPositions;
 }
 
-vector<vector<vector<int>>> makeMove(vector<vector<vector<int>>> positions, vector<string> grid, int nextNum)
-{
-	vector<vector<vector<int>>> nextPositions;
-	for (auto pos : positions)
-	{
-		for (auto move : moves)
-		{
-			vector<int> nextPos = pos.back() + move;
-			if (checkPos(nextPos, grid))
-			{
-				int x = nextPos[0];
-				int y = nextPos[1];
-				if (grid[y][x] - '0' == nextNum)
-				{
-					vector<vector<int>> newPath = pos;
-					newPath.push_back(nextPos);
-					nextPositions.push_back(newPath);
-				}
-			}
-		}
-	}
-	return nextPositions;
-}
-
 int main() {
 	ifstream FileName;
 	FileName.open("aoc.txt");
@@ -79,13 +55,10 @@ int main() {
 	for (auto pos : startPos)
 	{
 		vector<vector<int>> nextMoves;
-		vector<vector<vector<int>>> paths;
 		nextMoves.push_back(pos);
-		paths.push_back({ pos });
 		for (int i = 1; i < 10; i++)
 		{
 			nextMoves = makeMove(nextMoves, grid, i);
-			paths = makeMove(paths, grid, i);
 		}
 		set<vector<int>>uniqueEnds;
 		for (auto ends : nextMoves)
@@ -93,7 +66,7 @@ int main() {
 			uniqueEnds.insert(ends);
 		}
 		total += uniqueEnds.size();
-		total2 += paths.size();
+		total2 += nextMoves.size();
 	}
 	cout << total << endl;
 	cout << total2 << endl;
