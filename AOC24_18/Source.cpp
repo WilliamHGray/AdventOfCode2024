@@ -66,26 +66,28 @@ int main() {
 
 	cout << getDistance(grid, distance) << endl;
 
-
-	int nextByte = 1800;
-	for (int i = 0; i < nextByte; i++)
+	int lb = 0;
+	int ub = rems.size();
+	int mid = (lb + ub) / 2;
+	while (lb != mid)
 	{
-		vector<int> pos = rems[i];
-		grid[pos[1]][pos[0]] = '#';	
-	}
-	//cout << getDistance(grid, distance) << endl;
-	//speed up the process a bit by printing out min dist after n bytes.	
-
-
-	for (int i = nextByte; i < rems.size(); i++)
-	{
-		vector<int> pos = rems[i];
-		grid[pos[1]][pos[0]] = '#';
-		int newDist = getDistance(grid, distance);
+		
+		vector<string> grid2 = grid;
+		for (int i = lb; i < mid; i++)
+		{
+			grid2[rems[i][1]][rems[i][0]] = '#';
+		}
+		int newDist = getDistance(grid2, distance);
 		if (newDist == -1)
 		{
-			print(pos);
-			break;
+			ub = mid;
 		}
+		else
+		{
+			grid = grid2;
+			lb = mid;
+		}
+		mid = (lb + ub) / 2;
 	}
+	print(rems[lb]);
 }
